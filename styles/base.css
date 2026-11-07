@@ -1,0 +1,371 @@
+/* ==========================================================================
+   IdeoHealth Group — base.css
+   Tokens de marca, reset, tipografía, botones y utilidades compartidas.
+   Los colores de marca fueron muestreados de los logos:
+   azul "Ideo" #003878 · turquesa "Health" #008098 · verde de la flecha #00b098
+   ========================================================================== */
+
+:root {
+  /* Marca */
+  --navy-950: #031a3a;
+  --navy-900: #052a5c;
+  --navy-700: #0a3a78;
+  --blue-600: #0a5aa8;
+  --teal-600: #008aa0;
+  --teal-700: #00758a; /* texto turquesa sobre fondo claro (contraste AA) */
+  --teal-400: #14b3b3;
+  --green-500: #10b090;
+  --green-400: #46dea0; /* acento sobre fondos oscuros */
+
+  /* Neutros */
+  --ink: #0c2340;
+  --muted: #4a5d75;
+  --line: #d9e6ee;
+  --bg: #f5fafc;
+  --bg-tint: #eaf5f8;
+  --surface: #ffffff;
+
+  /* Degradados */
+  --grad-brand: linear-gradient(120deg, var(--navy-700) 0%, var(--teal-600) 58%, var(--green-500) 100%);
+  --grad-soft: linear-gradient(135deg, #e3f3f8 0%, #eefaf6 100%);
+  --grad-night: linear-gradient(160deg, #031a3a 0%, #052a5c 55%, #06476e 100%);
+
+  /* Tipografía */
+  --font-display: "Plus Jakarta Sans", "Nunito", system-ui, sans-serif;
+  --font-body: "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Forma y sombra */
+  --radius-sm: 12px;
+  --radius: 20px;
+  --radius-lg: 28px;
+  --shadow-sm: 0 1px 2px rgba(5, 42, 92, 0.06), 0 4px 14px rgba(5, 42, 92, 0.06);
+  --shadow: 0 2px 6px rgba(5, 42, 92, 0.05), 0 18px 40px -14px rgba(5, 42, 92, 0.2);
+  --shadow-lg: 0 34px 70px -24px rgba(5, 42, 92, 0.4);
+
+  /* Layout */
+  --container: 1180px;
+  --gutter: clamp(1.1rem, 4vw, 2rem);
+  --section-y: clamp(4.5rem, 9vw, 7.5rem);
+  --header-h: 76px;
+  --ease: cubic-bezier(0.22, 0.8, 0.3, 1);
+}
+
+/* ---------- Reset ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-h) + 12px);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+ul,
+figure,
+blockquote {
+  margin: 0;
+}
+
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+:focus-visible {
+  outline: 3px solid var(--teal-400);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+::selection {
+  background: rgba(20, 179, 179, 0.28);
+}
+
+/* ---------- Tipografía ---------- */
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  color: var(--navy-900);
+}
+
+h2 {
+  font-size: clamp(1.95rem, 3.9vw, 3rem);
+  font-weight: 800;
+}
+
+h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+strong {
+  font-weight: 800;
+}
+
+.grad-text {
+  background: var(--grad-brand);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--teal-700);
+}
+
+.eyebrow::before {
+  content: "";
+  width: 30px;
+  height: 3px;
+  border-radius: 3px;
+  background: var(--grad-brand);
+}
+
+/* ---------- Layout ---------- */
+.container {
+  width: min(100% - var(--gutter) * 2, var(--container));
+  margin-inline: auto;
+}
+
+.section {
+  padding-block: var(--section-y);
+  position: relative;
+}
+
+.section-head {
+  max-width: 760px;
+  margin-bottom: clamp(2.2rem, 5vw, 3.6rem);
+}
+
+.section-head h2 {
+  margin-top: 1rem;
+}
+
+.section-head .lead {
+  margin-top: 1.1rem;
+  font-size: 1.15rem;
+  color: var(--muted);
+}
+
+.section-head.center {
+  margin-inline: auto;
+  text-align: center;
+}
+
+.section-head.center .eyebrow {
+  justify-content: center;
+}
+
+/* ---------- Iconos (sprite SVG inline) ---------- */
+.icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ---------- Botones ---------- */
+.btn {
+  --btn-pad: 0.95rem 1.6rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: var(--btn-pad);
+  border: 2px solid transparent;
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.98rem;
+  line-height: 1.1;
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+  transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), background 0.25s, color 0.25s,
+    border-color 0.25s;
+}
+
+.btn .icon {
+  width: 1.15rem;
+  height: 1.15rem;
+  transition: transform 0.25s var(--ease);
+}
+
+.btn:hover .icon-arrow {
+  transform: translateX(4px);
+}
+
+.btn-sm {
+  --btn-pad: 0.65rem 1.2rem;
+  font-size: 0.9rem;
+}
+
+.btn-primary {
+  color: #fff;
+  background: var(--grad-brand);
+  background-size: 140% 100%;
+  box-shadow: 0 10px 24px -8px rgba(0, 117, 138, 0.55);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  background-position: 100% 0;
+  box-shadow: 0 16px 30px -8px rgba(0, 117, 138, 0.6);
+}
+
+.btn-ghost {
+  color: var(--navy-700);
+  border-color: rgba(10, 58, 120, 0.25);
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.btn-ghost:hover {
+  border-color: var(--navy-700);
+  background: #fff;
+  transform: translateY(-2px);
+}
+
+.btn-light {
+  color: var(--navy-900);
+  background: #fff;
+  box-shadow: 0 12px 28px -10px rgba(2, 20, 50, 0.5);
+}
+
+.btn-light:hover {
+  transform: translateY(-2px);
+}
+
+.btn-outline-light {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.45);
+}
+
+.btn-outline-light:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: #fff;
+  transform: translateY(-2px);
+}
+
+/* ---------- Accesibilidad ---------- */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 200;
+  padding: 0.7rem 1.1rem;
+  border-radius: 10px;
+  background: var(--navy-900);
+  color: #fff;
+  font-weight: 700;
+  transform: translateY(-200%);
+  transition: transform 0.2s;
+}
+
+.skip-link:focus {
+  transform: none;
+}
+
+/* ---------- Animación de entrada (solo si hay JS) ---------- */
+.js .reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
+  transition-delay: calc(var(--d, 0) * 90ms);
+}
+
+.js .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    transition-delay: 0ms !important;
+  }
+
+  .js .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}

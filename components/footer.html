@@ -1,0 +1,51 @@
+<!-- ==========================================================================
+     COMPONENTE COMPARTIDO: pie de página
+     Se inserta en index.html y nosotros.html con:
+         <div data-include="components/footer.html"></div>
+     Los enlaces usan rutas completas (index.html#..., nosotros.html#...) para
+     que funcionen igual desde cualquiera de las dos páginas.
+     ========================================================================== -->
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <img
+        src="images/brand/logo-horizontal.png"
+        alt="IdeoHealth Group, soluciones integrales para organizaciones de salud"
+        width="417"
+        height="144"
+        loading="lazy"
+      />
+      <p class="footer-motto">Tú tienes la idea. Nosotros te ayudamos a convertirla en realidad.</p>
+      <p>Estrategia · Gestión · Innovación · Resultados</p>
+    </div>
+
+    <nav aria-labelledby="footer-services">
+      <h2 id="footer-services">Servicios</h2>
+      <ul class="footer-links">
+        <li><a href="index.html#servicios">Estrategia y Gobierno Corporativo</a></li>
+        <li><a href="index.html#servicios">Calidad y Seguridad Clínica</a></li>
+        <li><a href="index.html#servicios">Excelencia Operativa y Procesos</a></li>
+        <li><a href="index.html#servicios">Innovación y Nuevos Negocios</a></li>
+        <li><a href="index.html#metodologia">Metodología de acompañamiento</a></li>
+      </ul>
+    </nav>
+
+    <nav aria-labelledby="footer-about">
+      <h2 id="footer-about">Nosotros</h2>
+      <ul class="footer-links">
+        <li><a href="nosotros.html#historia">Nuestra historia</a></li>
+        <li><a href="nosotros.html#valores">Valores</a></li>
+        <li><a href="nosotros.html#propuesta">Propuesta de valor</a></li>
+        <li><a href="nosotros.html#equipo">Equipo</a></li>
+        <li><a href="#contacto">Contáctanos</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="container footer-bottom">
+    <span>© <span id="year">2026</span> IdeoHealth Group. Todos los derechos reservados.</span>
+    <a class="to-top" href="#top">
+      Volver arriba <svg class="icon" aria-hidden="true"><use href="images/icons.svg#i-arrow-up" /></svg>
+    </a>
+  </div>
+</footer>

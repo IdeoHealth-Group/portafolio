@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Descargar brief | IdeoHealth Group</title>
+    <meta name="robots" content="noindex" />
+    <meta name="theme-color" content="#0a3a78" />
+    <link rel="icon" type="image/svg+xml" href="../images/brand/favicon.svg" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles/base.css" />
+    <link rel="stylesheet" href="../styles/download.css" />
+  </head>
+
+  <body class="dl-body">
+    <!--
+      Ruta /download: genera y descarga el brief en PDF con la información ACTUAL del sitio.
+      No existe ningún PDF guardado: lo arma scripts/brief/ cada vez (ver README.md).
+        /download            → descarga automática
+        /download?preview    → vista previa en esta misma página
+    -->
+    <main class="dl-card">
+      <a class="dl-logo" href="../index.html" aria-label="Ir al sitio de IdeoHealth Group">
+        <img src="../images/brand/logo-horizontal-nav.png" alt="IdeoHealth Group" width="417" height="103" />
+      </a>
+
+      <!-- Generando -->
+      <section data-state="loading" aria-live="polite">
+        <span class="dl-spinner" aria-hidden="true"></span>
+        <h1>Preparando tu brief</h1>
+        <p>Estamos armando el PDF con la información más reciente del sitio.</p>
+        <p class="dl-status" data-status>Iniciando…</p>
+      </section>
+
+      <!-- Listo -->
+      <section data-state="done" hidden>
+        <span class="dl-icon dl-icon-ok" aria-hidden="true"><svg class="icon"><use href="../images/icons.svg#i-check" /></svg></span>
+        <h1>Tu brief se descargó</h1>
+        <p>Revisa tu carpeta de descargas. Si no empezó solo, puedes descargarlo de nuevo.</p>
+        <div class="dl-actions">
+          <button class="btn btn-primary" type="button" data-download>Descargar de nuevo</button>
+          <a class="btn btn-ghost" href="../index.html">Volver al sitio</a>
+        </div>
+      </section>
+
+      <!-- Error -->
+      <section data-state="error" hidden role="alert">
+        <span class="dl-icon dl-icon-error" aria-hidden="true"><svg class="icon"><use href="../images/icons.svg#i-alert" /></svg></span>
+        <h1>No pudimos generar el brief</h1>
+        <p>Inténtalo de nuevo en un momento. Si el problema continúa, escríbenos desde la página de contacto.</p>
+        <p class="dl-detail" data-error-detail></p>
+        <div class="dl-actions">
+          <button class="btn btn-primary" type="button" data-retry>Reintentar</button>
+          <a class="btn btn-ghost" href="../index.html#contacto">Contáctanos</a>
+        </div>
+      </section>
+
+      <noscript><p class="dl-detail">Activa JavaScript para generar el brief.</p></noscript>
+    </main>
+
+    <!-- Vista previa (solo con /download?preview) -->
+    <section class="dl-preview" data-state="preview" hidden>
+      <div class="dl-preview-bar">
+        <strong>Vista previa del brief</strong>
+        <span>
+          <button class="btn btn-primary btn-sm" type="button" data-download>Descargar PDF</button>
+          <a class="btn btn-ghost btn-sm" href="../index.html">Volver al sitio</a>
+        </span>
+      </div>
+      <iframe data-preview-frame title="Vista previa del brief en PDF"></iframe>
+    </section>
+
+    <script src="../vendor/pdfmake/pdfmake.min.js"></script>
+    <script type="module" src="../scripts/brief/download-page.js"></script>
+  </body>
+</html>

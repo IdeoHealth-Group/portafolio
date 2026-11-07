@@ -1,0 +1,207 @@
+<!-- ==========================================================================
+     COMPONENTE COMPARTIDO: sección de contacto (formulario + datos)
+
+     Se inserta en index.html y nosotros.html con:
+         <div data-include="components/contacto.html"></div>
+     Edita este archivo UNA sola vez y el cambio se refleja en ambas páginas.
+
+     · Estilos:        styles/contact.css
+     · Lógica/envío:   scripts/contact-form.js
+     · Datos de contacto opcionales y URL de envío: scripts/config.js
+     · Correos que se envían:   emails/
+     ========================================================================== -->
+<section class="section contact" id="contacto" aria-labelledby="contact-title">
+  <div class="container">
+    <div class="contact-shell reveal">
+      <!-- ===== Panel izquierdo: marca y qué sigue ===== -->
+      <aside class="contact-info">
+        <div class="brand-seal">
+          <img
+            src="images/brand/logo-horizontal-nav.png"
+            alt="IdeoHealth Group"
+            width="417"
+            height="103"
+            loading="lazy"
+          />
+        </div>
+
+        <p class="eyebrow">Contáctanos</p>
+        <h2 id="contact-title">Hablemos de <span>tu idea</span></h2>
+        <p class="contact-lead">
+          Cuéntanos qué tienes y qué necesitas de nosotros. En pocas horas nos pondremos en contacto contigo.
+        </p>
+
+        <ol class="contact-steps">
+          <li>
+            <span class="step-dot">1</span>
+            <div>
+              <strong>Cuéntanos tu idea</strong>
+              <span>Completa el formulario con tus datos y lo que necesitas.</span>
+            </div>
+          </li>
+          <li>
+            <span class="step-dot">2</span>
+            <div>
+              <strong>Te contactamos en pocas horas</strong>
+              <span>Revisamos tu solicitud y nos comunicamos contigo.</span>
+            </div>
+          </li>
+          <li>
+            <span class="step-dot">3</span>
+            <div>
+              <strong>Iniciamos con un Sprint de 2 semanas</strong>
+              <span>Evaluación rápida de tu idea, propuesta de trabajo conjunto y acuerdo comercial.</span>
+            </div>
+          </li>
+        </ol>
+
+        <!-- Se completa desde scripts/config.js (contact). Solo se muestran los datos que estén llenos. -->
+        <ul class="contact-list" data-contact-list hidden>
+          <li data-contact="email" hidden>
+            <a href="#"><svg class="icon" aria-hidden="true"><use href="images/icons.svg#i-mail" /></svg><span></span></a>
+          </li>
+          <li data-contact="phone" hidden>
+            <a href="#"><svg class="icon" aria-hidden="true"><use href="images/icons.svg#i-phone" /></svg><span></span></a>
+          </li>
+          <li data-contact="whatsapp" hidden>
+            <a href="#" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="images/icons.svg#i-message" /></svg><span>WhatsApp</span></a>
+          </li>
+          <li data-contact="linkedin" hidden>
+            <a href="#" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="images/icons.svg#i-linkedin" /></svg><span>LinkedIn</span></a>
+          </li>
+        </ul>
+
+        <p class="contact-commitment">
+          Nuestro compromiso es convertir las ideas en proyectos, los proyectos en resultados y los resultados
+          en oportunidades de crecimiento para quienes trabajan cada día por transformar la salud.
+        </p>
+      </aside>
+
+      <!-- ===== Panel derecho: formulario ===== -->
+      <div class="contact-form-wrap">
+        <div data-form-view>
+          <header class="form-head">
+            <h3>Trabajemos juntos</h3>
+            <!--<p>Los campos con <span class="req" aria-hidden="true">*</span><span class="sr-only">asterisco</span> son obligatorios.</p>-->
+          </header>
+
+          <form id="contact-form" novalidate>
+            <div class="form-grid">
+              <div class="field">
+                <label for="cf-name">Nombre <span class="req" aria-hidden="true">*</span></label>
+                <div class="control">
+                  <svg class="icon" aria-hidden="true"><use href="images/icons.svg#i-user" /></svg>
+                  <input id="cf-name" name="name" type="text" autocomplete="name" placeholder="Tu nombre completo" maxlength="100" required aria-describedby="cf-name-error" />
+                </div>
+                <p class="field-error" id="cf-name-error" aria-live="polite"></p>
+              </div>
+
+              <div class="field">
+                <label for="cf-company">Empresa u organización <span class="opt">(opcional)</span></label>
+                <div class="control">
+                  <svg class="icon" aria-hidden="true"><use href="images/icons.svg#i-building" /></svg>
+                  <input id="cf-company" name="company" type="text" autocomplete="organization" placeholder="Nombre de tu empresa" maxlength="120" aria-describedby="cf-company-error" />
+                </div>
+                <p class="field-error" id="cf-company-error" aria-live="polite"></p>
+              </div>
+
+              <div class="field">
+                <label for="cf-phone">Teléfono / WhatsApp <span class="req" aria-hidden="true">*</span></label>
+                <div class="control">
+                  <svg class="icon" aria-hidden="true"><use href="images/icons.svg#i-phone" /></svg>
+                  <input id="cf-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+57 300 000 0000" maxlength="30" required aria-describedby="cf-phone-error" />
+                </div>
+                <p class="field-error" id="cf-phone-error" aria-live="polite"></p>
+              </div>
+
+              <div class="field">
+                <label for="cf-email">Correo electrónico <span class="req" aria-hidden="true">*</span></label>
+                <div class="control">
+                  <svg class="icon" aria-hidden="true"><use href="images/icons.svg#i-mail" /></svg>
+                  <input id="cf-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="tucorreo@empresa.com" maxlength="120" required aria-describedby="cf-email-error" />
+                </div>
+                <p class="field-error" id="cf-email-error" aria-live="polite"></p>
+              </div>
+
+              <div class="field full">
+                <label for="cf-service">¿Qué servicio te interesa? <span class="req" aria-hidden="true">*</span></label>
+                <div class="control control-select">
+                  <svg class="icon" aria-hidden="true"><use href="images/icons.svg#i-layers" /></svg>
+                  <select id="cf-service" name="service" required aria-describedby="cf-service-error">
+                    <option value="" selected disabled>Selecciona un servicio</option>
+                    <option>Estrategia y Gobierno Corporativo</option>
+                    <option>Calidad y Seguridad Clínica</option>
+                    <option>Excelencia Operativa y Procesos</option>
+                    <option>Innovación y Nuevos Negocios</option>
+                    <option>Varios servicios</option>
+                    <option>Aún no lo tengo claro</option>
+                  </select>
+                </div>
+                <p class="field-error" id="cf-service-error" aria-live="polite"></p>
+              </div>
+
+              <div class="field full">
+                <label for="cf-message">Cuéntanos qué tienes y qué necesitas de nosotros <span class="req" aria-hidden="true">*</span></label>
+                <textarea id="cf-message" name="message" rows="5" maxlength="1500" placeholder="Describe brevemente tu idea, proyecto u organización y en qué podemos ayudarte." required aria-describedby="cf-message-error cf-message-count"></textarea>
+                <div class="field-foot">
+                  <p class="field-error" id="cf-message-error" aria-live="polite"></p>
+                  <span class="char-count" id="cf-message-count" data-char-count>0 / 1500</span>
+                </div>
+              </div>
+
+              <div class="field full">
+                <label class="check" for="cf-consent">
+                  <input id="cf-consent" name="consent" type="checkbox" required aria-describedby="cf-consent-error" />
+                  <span class="check-box" aria-hidden="true"><svg class="icon"><use href="images/icons.svg#i-check" /></svg></span>
+                  <span class="check-text">
+                    Autorizo a IdeoHealth Group a usar mis datos personales para contactarme respecto a esta
+                    solicitud. <span class="req" aria-hidden="true">*</span>
+                  </span>
+                </label>
+                <p class="field-error" id="cf-consent-error" aria-live="polite"></p>
+              </div>
+            </div>
+
+            <!-- Campo trampa para bots: las personas no lo ven ni lo llenan -->
+            <div class="hp" aria-hidden="true">
+              <label>No llenes este campo <input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+            </div>
+
+            <div class="form-alert" data-form-alert role="alert" hidden>
+              <svg class="icon" aria-hidden="true"><use href="images/icons.svg#i-alert" /></svg>
+              <p data-form-alert-text></p>
+            </div>
+
+            <button class="btn btn-primary btn-submit" type="submit">
+              <span class="btn-spinner" aria-hidden="true"></span>
+              <span class="btn-label">Enviar solicitud</span>
+              <svg class="icon icon-send" aria-hidden="true"><use href="images/icons.svg#i-send" /></svg>
+            </button>
+
+            <p class="form-note">
+              <svg class="icon" aria-hidden="true"><use href="images/icons.svg#i-clock" /></svg>
+              Te enviaremos un correo de confirmación y te contactaremos en pocas horas.
+            </p>
+          </form>
+        </div>
+
+        <!-- Estado de éxito (reemplaza el formulario tras enviar) -->
+        <div class="form-success" data-form-success hidden tabindex="-1">
+          <span class="success-icon" aria-hidden="true"><svg class="icon"><use href="images/icons.svg#i-check" /></svg></span>
+          <h3>¡Gracias, <span data-success-name></span>!</h3>
+          <p>
+            Recibimos tu solicitud. <strong>En pocas horas nos pondremos en contacto contigo.</strong>
+          </p>
+          <p>
+            Te enviamos un correo de confirmación a <strong data-success-email></strong>. Si no lo ves, revisa
+            tu carpeta de spam o correo no deseado.
+          </p>
+          <p class="success-demo" data-success-demo hidden>
+            Modo demostración: este envío fue simulado, no se envió ningún correo.
+          </p>
+          <button class="btn btn-ghost" type="button" data-form-reset>Enviar otra solicitud</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

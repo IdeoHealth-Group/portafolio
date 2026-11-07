@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<!-- ============================================================================
+     CORREO PARA EL EQUIPO — "Nueva solicitud de contacto"
+     Se envía a los correos de TEAM_EMAILS (apps-script/Code.gs) cada vez que alguien
+     llena el formulario. Al pulsar "Responder", le contestas directamente al cliente.
+
+     CÓMO EDITARLO
+     · Cambia textos, colores o el orden de las secciones directamente en este archivo.
+     · Publica el cambio en GitHub Pages: el script lee este archivo del sitio al enviar
+       cada correo, no hace falta tocar Apps Script.
+     · Para ver cómo queda, abre emails/preview.html (con `python3 -m http.server`).
+     · Si cambias el ASUNTO, está en CONFIG.SUBJECT_TEAM de apps-script/Code.gs.
+
+     VARIABLES DISPONIBLES (se escriben tal cual, con doble llave)
+       {{nombre}}          Nombre completo de quien escribió
+       {{primer_nombre}}   Solo el primer nombre
+       {{empresa}}         Empresa u organización ("No indicada" si la dejó vacía)
+       {{telefono}}        Teléfono como lo escribió
+       {{telefono_link}}   Teléfono limpio para enlaces tel:
+       {{correo}}          Correo de la persona
+       {{servicio}}        Servicio que le interesa
+       {{descripcion}}     Qué tiene y qué necesita (ya con saltos de línea)
+       {{fecha}}           Fecha y hora de la solicitud (hora de Colombia)
+       {{responder_url}}   Enlace mailto: ya con asunto para responderle
+       {{marca}}           Nombre de la marca (CONFIG.BRAND_NAME)
+       {{sitio_url}}       Dirección del sitio publicado (CONFIG.SITE_URL)
+       {{logo_url}}        Logo del encabezado (sitio_url + /images/brand/...)
+       {{anio}}            Año actual
+
+     Los comentarios HTML como este se eliminan antes de enviar el correo.
+     ============================================================================ -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="x-apple-disable-message-reformatting">
+<meta name="color-scheme" content="light only">
+<meta name="supported-color-schemes" content="light only">
+<title>Nueva solicitud de contacto</title>
+<style>
+  body { margin: 0; padding: 0; width: 100% !important; background-color: #eaf2f6; }
+  table { border-collapse: collapse; }
+  img { border: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; }
+  a { text-decoration: none; }
+  @media only screen and (max-width: 620px) {
+    .container { width: 100% !important; }
+    .px { padding-left: 22px !important; padding-right: 22px !important; }
+    .stack { display: block !important; width: 100% !important; box-sizing: border-box; }
+    .label-cell { padding-bottom: 2px !important; border-bottom: 0 !important; }
+    .btn-cell { display: block !important; width: 100% !important; padding: 0 0 10px 0 !important; }
+    .btn-cell a { display: block !important; }
+    .h1 { font-size: 24px !important; line-height: 30px !important; }
+  }
+</style>
+</head>
+<body style="margin:0;padding:0;background-color:#eaf2f6;">
+
+<!-- Texto de vista previa (lo que se ve en la bandeja de entrada junto al asunto) -->
+<div style="display:none;font-size:1px;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;mso-hide:all;">
+  {{nombre}} quiere ponerse en contacto: {{servicio}}. Responde en las próximas horas.
+  &#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;
+</div>
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#eaf2f6" style="background-color:#eaf2f6;">
+  <tr>
+    <td align="center" style="padding:32px 12px;">
+
+      <table role="presentation" class="container" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px;max-width:600px;">
+
+        <!-- ============ Tarjeta principal ============ -->
+        <tr>
+          <td style="background-color:#ffffff;border:1px solid #d9e6ee;border-radius:22px;overflow:hidden;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+
+              <!-- Logo -->
+              <tr>
+                <td class="px" style="padding:26px 40px 22px 40px;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td align="left" valign="middle">
+                        <img src="{{logo_url}}" width="170" alt="{{marca}}" style="display:block;width:170px;max-width:100%;height:auto;">
+                      </td>
+                      <td align="right" valign="middle" style="font-family:'Segoe UI',Helvetica,Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:#7a8ca3;">
+                        Alerta interna
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+              <!-- Banda de título -->
+              <tr>
+                <td class="px" bgcolor="#0a3a78" style="padding:34px 40px 36px 40px;background-color:#0a3a78;background-image:linear-gradient(120deg,#0a3a78 0%,#008aa0 72%,#10b090 100%);">
+                  <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td bgcolor="#ffffff" style="background-color:#ffffff;border-radius:999px;padding:6px 14px;font-family:'Segoe UI',Helvetica,Arial,sans-serif;font-size:11px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;color:#008aa0;">
+                        Nueva solicitud
+                      </td>
+                    </tr>
+                  </table>
+                  <h1 class="h1" style="margin:16px 0 0 0;font-family:'Segoe UI',Helvetica,Arial,sans-serif;font-size:28px;line-height:34px;font-weight:800;letter-spacing:-0.4px;color:#ffffff;">
+                    {{nombre}} quiere ponerse en contacto con nosotros
+                  </h1>
+                  <p style="margin:12px 0 0 0;font-family:'Segoe UI',Helvetica,Arial,sans-serif;font-size:14px;line-height:21px;color:#d8f1f2;">
+                    Recibida el {{fecha}}
+                  </p>
+                </td>
+              </tr>
+
+              <!-- Compromiso de respuesta -->
+              <tr>
+                <td class="px" style="padding:28px 40px 0 40px;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:separate;">
+                    <tr>
+                      <td bgcolor="#eaf8f3" style="background-color:#eaf8f3;border:1px solid #bfe9d9;border-radius:14px;padding:14px 18px;font-family:'Segoe UI',Helvetica,Arial,sans-serif;font-size:14px;line-height:21px;color:#0b6e4f;">
+                        <strong>Compromiso de respuesta:</strong> nos comunicamos con esta persona en las próximas horas.
+                        Ya le enviamos un correo de confirmación avisándole.
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+              <!-- Datos de contacto -->
+              <tr>
+                <td class="px" style="padding:26px 40px 0 40px;">
+                  <p style="margin:0 0 10px 0;font-family:'Segoe UI',Helvetica,Arial,sans-serif;font-size:12px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;color:#008aa0;">
+                    Datos de contacto
+                  </p>
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:separate;border-spacing:0;border:1px solid #e1ebf1;border-radius:14px;">
+                    <tr>
+                      <td class="stack label-cell" width="34%" valign="top" style="padding:14px 18px;border-bottom:1px solid #e9f0f5;font-family:'Segoe UI',Helvetica,Arial,sans-serif;font-size:12px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:#6b7f95;">Nombre</td>
+                      <td class="stack" valign="top" style="padding:14px 18px;border-bottom:1px solid #e9f0f5;font-family:'Segoe UI',Helvetica,Arial,sans-serif;font-size:15px;line-height:22px;font-weight:600;color:#0c2340;">{{nombre}}</td>
+                    </tr>
+                    <tr>
+                      <td class="stack label-cell" valign="top" style="padding:14px 18px;border-bottom:1px solid #e9f0f5;font-family:'Segoe UI',Helvetica,Arial,sans-serif;font-size:12px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:#6b7f95;">Empresa</td>
+                      <td class="stack" valign="top" style="padding:14px 18px;border-bottom:1px solid #e9f0f5;font-family:'Segoe UI',Helvetica,Arial,sans-serif;font-size:15px;line-height:22px;font-weight:600;color:#0c2340;">{{empresa}}</td>
+                    </tr>
+                    <tr>
+                      <td class="stack label-cell" valign="top" style="padding:14px 18px;border-bottom:1px solid #e9f0f5;font-family:'Segoe UI',Helvetica,Arial,sans-serif;font-size:12px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:#6b7f95;">Teléfono</td>
+                      <td class="stack" valign="top" style="padding:14px 18px;border-bottom:1px solid #e9f0f5;font-family:'Segoe UI',Helvetica,Arial,sans-serif;font-size:15px;line-height:22px;font-weight:600;color:#0c2340;">
+                        <a href="tel:{{telefono_link}}" style="color:#008aa0;font-weight:700;">{{telefono}}</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="stack label-cell" valign="top" style="padding:14px 18px;border-bottom:1px solid #e9f0f5;font-family:'Segoe UI',Helvetica,Arial,sans-serif;font-size:12px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:#6b7f95;">Correo</td>
+                      <td class="stack" valign="top" style="padding:14px 18px;border-bottom:1px solid #e9f0f5;font-family:'Segoe UI',Helvetica,Arial,sans-serif;font-size:15px;line-height:22px;font-weight:600;color:#0c2340;word-break:break-all;">
+                        <a href="mailto:{{correo}}" style="color:#008aa0;font-weight:700;">{{correo}}</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="stack label-cell" valign="top" style="padding:14px 18px;font-family:'Segoe UI',Helvetica,Arial,sans-serif;font-size:12px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:#6b7f95;">Servicio</td>
+                      <td class="stack" valign="top" style="padding:14px 18px;font-family:'Segoe UI',Helvetica,Arial,sans-serif;font-size:15px;line-height:22px;font-weight:700;color:#0a3a78;">{{servicio}}</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+              <!-- Descripción -->
+              <tr>
+                <td class="px" style="padding:26px 40px 0 40px;">
+                  <p style="margin:0 0 10px 0;font-family:'Segoe UI',Helvetica,Arial,sans-serif;font-size:12px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;color:#008aa0;">
+                    Qué tiene y qué necesita de nosotros
+                  </p>
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td width="4" bgcolor="#008aa0" style="width:4px;background-color:#008aa0;border-radius:4px;font-size:0;line-height:0;">&nbsp;</td>
+                      <td bgcolor="#f4f9fb" style="background-color:#f4f9fb;padding:18px 20px;font-family:'Segoe UI',Helvetica,Arial,sans-serif;font-size:15px;line-height:24px;color:#243b57;">
+                        {{descripcion}}
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+              <!-- Botones -->
+              <tr>
+                <td class="px" style="padding:30px 40px 6px 40px;">
+                  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                    <tr>
+                      <td class="btn-cell" align="left" style="padding:0 10px 0 0;" width="50%">
+                        <a href="{{responder_url}}" style="display:block;background-color:#0a3a78;border-radius:999px;padding:14px 22px;text-align:center;font-family:'Segoe UI',Helvetica,Arial,sans-serif;font-size:15px;font-weight:700;color:#ffffff;">Responder por correo</a>
+                      </td>
+                      <td class="btn-cell" align="right" style="padding:0 0 0 10px;" width="50%">
+                        <a href="tel:{{telefono_link}}" style="display:block;background-color:#ffffff;border:2px solid #008aa0;border-radius:999px;padding:12px 22px;text-align:center;font-family:'Segoe UI',Helvetica,Arial,sans-serif;font-size:15px;font-weight:700;color:#008aa0;">Llamar ahora</a>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+              <!-- Nota -->
+              <tr>
+                <td class="px" style="padding:18px 40px 34px 40px;font-family:'Segoe UI',Helvetica,Arial,sans-serif;font-size:13px;line-height:20px;color:#6b7f95;">
+                  Tip: si respondes a este mismo correo, tu mensaje le llega directamente a {{primer_nombre}}.
+                </td>
+              </tr>
+
+            </table>
+          </td>
+        </tr>
+
+        <!-- ============ Pie ============ -->
+        <tr>
+          <td align="center" style="padding:22px 20px 0 20px;font-family:'Segoe UI',Helvetica,Arial,sans-serif;font-size:12px;line-height:19px;color:#7a8ca3;">
+            Este aviso se generó automáticamente desde el formulario de contacto de
+            <a href="{{sitio_url}}" style="color:#008aa0;">{{sitio_url}}</a>.<br>
+            &copy; {{anio}} {{marca}}
+          </td>
+        </tr>
+
+      </table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

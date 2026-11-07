@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Vista previa de correos | IdeoHealth Group</title>
+    <style>
+      :root {
+        --navy: #0a3a78;
+        --teal: #008aa0;
+        --line: #d9e6ee;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+        color: #0c2340;
+        background: #dfe8ee;
+      }
+      .bar {
+        position: sticky;
+        top: 0;
+        z-index: 5;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.8rem 1.4rem;
+        padding: 0.8rem 1.2rem;
+        background: #fff;
+        border-bottom: 1px solid var(--line);
+        box-shadow: 0 6px 20px -14px rgba(5, 42, 92, 0.4);
+      }
+      .bar h1 {
+        margin: 0;
+        font-size: 1rem;
+        color: var(--navy);
+      }
+      .group {
+        display: inline-flex;
+        padding: 3px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: #f4f9fb;
+      }
+      button {
+        padding: 0.5rem 1rem;
+        border: 0;
+        border-radius: 999px;
+        background: transparent;
+        font: 600 0.88rem inherit;
+        font-family: inherit;
+        color: #4a5d75;
+        cursor: pointer;
+      }
+      button[aria-pressed="true"] {
+        background: var(--navy);
+        color: #fff;
+      }
+      .reload {
+        margin-left: auto;
+        border: 1px solid var(--line);
+        background: #fff;
+        color: var(--teal);
+      }
+      .meta {
+        width: 100%;
+        margin: 0;
+        font-size: 0.82rem;
+        color: #5b6f86;
+      }
+      .meta code {
+        padding: 1px 6px;
+        border-radius: 6px;
+        background: #eef4f8;
+      }
+      .stage {
+        display: flex;
+        justify-content: center;
+        padding: 1.6rem 1rem 3rem;
+      }
+      iframe {
+        width: 680px;
+        max-width: 100%;
+        height: 1500px;
+        border: 0;
+        border-radius: 12px;
+        background: #fff;
+        box-shadow: 0 20px 50px -20px rgba(5, 42, 92, 0.45);
+        transition: width 0.25s;
+      }
+      iframe.mobile {
+        width: 390px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bar">
+      <h1>Vista previa de correos</h1>
+      <div class="group" role="group" aria-label="Correo">
+        <button type="button" data-tpl="notificacion-equipo.html" aria-pressed="true">Correo para el equipo</button>
+        <button type="button" data-tpl="confirmacion-cliente.html" aria-pressed="false">Correo para el cliente</button>
+      </div>
+      <div class="group" role="group" aria-label="Ancho">
+        <button type="button" data-width="desktop" aria-pressed="true">Escritorio</button>
+        <button type="button" data-width="mobile" aria-pressed="false">Móvil</button>
+      </div>
+      <button type="button" class="reload" id="reload">Recargar archivo</button>
+      <p class="meta">
+        Se muestran con datos de ejemplo. Edita el archivo en <code>emails/</code>, guarda y pulsa
+        “Recargar archivo”. Debes abrir esta página desde un servidor (<code>python3 -m http.server</code>).
+      </p>
+    </div>
+
+    <div class="stage"><iframe id="frame" title="Vista previa del correo"></iframe></div>
+
+    <script>
+      const root = new URL("../", location.href);
+      const SAMPLE = {
+        nombre: "María Fernanda Rojas",
+        primer_nombre: "María",
+        empresa: "Clínica Santa Aurora",
+        telefono: "+57 300 123 4567",
+        telefono_link: "+573001234567",
+        correo: "maria.rojas@clinicasantaaurora.co",
+        servicio: "Calidad y Seguridad Clínica",
+        descripcion:
+          "Somos una clínica de mediana complejidad en Bogotá y estamos preparando la renovación de la acreditación.<br>Necesitamos apoyo para diseñar el programa de seguridad del paciente y ordenar la documentación.",
+        fecha: "7 de noviembre de 2026, 2:35 p. m.",
+        responder_url: "mailto:maria.rojas@clinicasantaaurora.co?subject=Re%3A%20Tu%20solicitud",
+        marca: "IdeoHealth Group",
+        sitio_url: root.href.replace(/\/$/, ""),
+        logo_url: new URL("images/brand/logo-horizontal-nav.png", root).href,
+        anio: String(new Date().getFullYear()),
+      };
+
+      // Misma lógica que apps-script/Code.gs: quita comentarios y reemplaza {{variables}}.
+      const fill = (html) =>
+        html.replace(/<!--[\s\S]*?-->/g, "").replace(/\{\{\s*([a-z_]+)\s*\}\}/g, (m, k) => (k in SAMPLE ? SAMPLE[k] : m));
+
+      const frame = document.getElementById("frame");
+      let current = "notificacion-equipo.html";
+
+      async function load() {
+        const res = await fetch(current, { cache: "no-store" });
+        frame.srcdoc = fill(await res.text());
+      }
+      frame.addEventListener("load", () => {
+        const h = frame.contentDocument?.documentElement?.scrollHeight;
+        if (h) frame.style.height = h + 8 + "px";
+      });
+
+      document.querySelectorAll("[data-tpl]").forEach((b) =>
+        b.addEventListener("click", () => {
+          current = b.dataset.tpl;
+          document.querySelectorAll("[data-tpl]").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+          load();
+        })
+      );
+      document.querySelectorAll("[data-width]").forEach((b) =>
+        b.addEventListener("click", () => {
+          frame.classList.toggle("mobile", b.dataset.width === "mobile");
+          document.querySelectorAll("[data-width]").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+          setTimeout(() => frame.dispatchEvent(new Event("load")), 300);
+        })
+      );
+      document.getElementById("reload").addEventListener("click", load);
+      load();
+    </script>
+  </body>
+</html>
